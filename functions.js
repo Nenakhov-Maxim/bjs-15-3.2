@@ -43,3 +43,28 @@ function getValuestCountToSumValues(arr, summ) {
     }, 0);
     return (i);
 }
+
+// Задание 2
+
+function sleep(milliseconds) {
+    let e = new Date().getTime() + milliseconds;
+    while (new Date().getTime() <= e) {}
+}
+
+function sum(...args) {
+    sleep(100);
+    return args.reduce((sum, arg) => {
+        return sum += +arg;
+    }, 0);
+}
+
+function compareArrays(arr1, arr2) {
+    let isParArrays = arr1.every((elem, index) => {
+        return elem === arr2[index];
+    })
+    return isParArrays;
+}
+
+function memorize(fn, limit) {
+    let memory = [];
+}
