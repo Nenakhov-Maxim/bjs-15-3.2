@@ -45,6 +45,9 @@ function getValuestCountToSumValues(arr, summ) {
 }
 
 // Задание 2
+let memory = [];
+let sumRes;
+let limited;
 
 function sleep(milliseconds) {
     let e = new Date().getTime() + milliseconds;
@@ -52,10 +55,28 @@ function sleep(milliseconds) {
 }
 
 function sum(...args) {
-    sleep(100);
-    return args.reduce((sum, arg) => {
-        return sum += +arg;
-    }, 0);
+    for (let i = 0, len = memory.length; i < len; i++) {
+        const element = memory[i];
+        if (element.args.length < 1) {
+            element.args = Array.from(arguments);
+            sleep(100);
+            element.result = args.reduce((summ, arg) => {
+                return summ += +arg;
+            }, 0);
+            checkAndAddNewElement(limited);
+            return element.result;
+        } else {
+            const comparison = memory.find(item => {
+                if (item.args.length === Array.from(arguments).length) {
+                    return compareArrays(item.args, Array.from(arguments))
+                }
+                return true;
+            })
+            if (comparison.args.length > 0) {
+                return comparison.result;
+            }
+        }
+    }
 }
 
 function compareArrays(arr1, arr2) {
@@ -63,8 +84,23 @@ function compareArrays(arr1, arr2) {
         return elem === arr2[index];
     })
     return isParArrays;
+
 }
 
+function checkAndAddNewElement(limit) {
+    if (memory.length <= limit) {
+        memory.push({ args: [], result: 0 });
+    } else {
+        memory.splice(0, 1);
+        memory.push({ args: [], result: 0 });
+    }
+}
+
+
+
 function memorize(fn, limit) {
-    let memory = [];
+    limited = limit;
+    memory = [{ args: [], result: sumRes }];
+    console.log(memory);
+    return fn;
 }
