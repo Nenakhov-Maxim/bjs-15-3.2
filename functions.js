@@ -3,33 +3,26 @@
 const weapons = [new Knife(), new Staff(), new Axe(), new StormStaff(), new LongBow(), new Bow()];
 
 function getNames() {
-    const namesWeapons = weapons.map(item => item.name);
-    return namesWeapons;
+    return weapons.map(item => item.name);
 }
 
 function getCountReliableWeapons(strength) {
-    const amountReliableWeapons = weapons.filter(item => item.durability > strength);
-    return amountReliableWeapons.length;
+    return weapons.filter(item => item.durability > strength).length;
 }
 
 function hasReliableWeapons(strength) {
-    const someWeapons = weapons.some(item => item.durability > strength);
-    return someWeapons;
+    return weapons.some(item => item.durability > strength);
 }
 
 function getReliableWeaponsNames(strength) {
-    const nameReliableWeapons = weapons
-        .filter(item => item.durability > strength)
+    return weapons.filter(item => item.durability > strength)
         .map(item => item.name);
-    return nameReliableWeapons;
 }
 
 function getTotalDamage() {
-    const totalDamage = weapons
-        .reduce((totalItemsDamage, weapon) => {
-            return totalItemsDamage + weapon.attack;
-        }, 0);
-    return totalDamage;
+    return weapons.reduce((totalItemsDamage, weapon) => {
+        return totalItemsDamage + weapon.attack;
+    }, 0);
 }
 
 function getValuestCountToSumValues(arr, summ) {
@@ -55,14 +48,26 @@ function sleep(milliseconds) {
 }
 
 function sum(...args) {
+    sleep(1000);
+    return args.reduce((sum, arg) => {
+        return sum += +arg;
+    }, 0);
+}
+
+function compareArrays(arr1, arr2) {
+    let isParArrays = arr1.every((elem, index) => {
+        return elem === arr2[index];
+    })
+    return isParArrays;
+
+}
+
+function сalculations(...args) {
     for (let i = 0, len = memory.length; i < len; i++) {
         const element = memory[i];
         if (element.args.length < 1) {
             element.args = Array.from(arguments);
-            sleep(100);
-            element.result = args.reduce((summ, arg) => {
-                return summ += +arg;
-            }, 0);
+            element.result = sum(...args);
             checkAndAddNewElement(limited);
             return element.result;
         } else {
@@ -79,14 +84,6 @@ function sum(...args) {
     }
 }
 
-function compareArrays(arr1, arr2) {
-    let isParArrays = arr1.every((elem, index) => {
-        return elem === arr2[index];
-    })
-    return isParArrays;
-
-}
-
 function checkAndAddNewElement(limit) {
     if (memory.length <= limit) {
         memory.push({ args: [], result: 0 });
@@ -95,8 +92,6 @@ function checkAndAddNewElement(limit) {
         memory.push({ args: [], result: 0 });
     }
 }
-
-
 
 function memorize(fn, limit) {
     limited = limit;
